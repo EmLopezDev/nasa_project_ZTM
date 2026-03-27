@@ -34,7 +34,12 @@ function postNewLaunch(launch) {
     launches.set(latestFlightNumber, updatedLaunch);
 }
 
-function deleteLaunch(launchId) {}
+function deleteLaunch(launchId) {
+    const aborted = launches.get(launchId);
+    aborted.upcoming = false;
+    aborted.success = false;
+    return aborted;
+}
 
 module.exports = {
     getLaunchById,
