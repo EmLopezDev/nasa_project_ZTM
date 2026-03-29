@@ -5,7 +5,7 @@ describe("Test GET /launches", () => {
     test("It should respond with 200 success", async () => {
         const response = await request(app)
             .get("/launches")
-            .expect("Content-Type", /json/)
+            .expect("Content-Type", "application/json; charset=utf-8")
             .expect(200);
 
         expect(response.body[0]).toStrictEqual({
@@ -44,7 +44,7 @@ describe("Test POST /launches", () => {
         const response = await request(app)
             .post("/launches")
             .send(completeLaunchData)
-            .expect("Content-Type", /json/)
+            .expect("Content-Type", "application/json; charset=utf-8")
             .expect(201);
 
         const requestDate = new Date(completeLaunchData.launchDate).valueOf();
@@ -58,7 +58,7 @@ describe("Test POST /launches", () => {
         const response = await request(app)
             .post("/launches")
             .send(launchDataWithoutDate)
-            .expect("Content-Type", /json/)
+            .expect("Content-Type", "application/json; charset=utf-8")
             .expect(400);
 
         expect(response.body).toStrictEqual({
@@ -69,7 +69,7 @@ describe("Test POST /launches", () => {
         const response = await request(app)
             .post("/launches")
             .send(launchDataWithInvalidDate)
-            .expect("Content-Type", /json/)
+            .expect("Content-Type", "application/json; charset=utf-8")
             .expect(400);
 
         expect(response.body).toStrictEqual({ error: "Invalid launch date" });

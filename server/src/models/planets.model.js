@@ -33,7 +33,6 @@ async function loadPlanetsData() {
         for await (const row of parserPipeline) {
             await handleRow(row);
         }
-        console.log(`${habitablePlanets.length} habitable planets found!`);
     } catch (error) {
         console.error(error);
     }
