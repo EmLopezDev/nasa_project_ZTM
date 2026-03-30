@@ -1,4 +1,4 @@
-const { Schema, Types } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const launchesSchema = new Schema({
     flightNumber: {
@@ -32,3 +32,5 @@ const launchesSchema = new Schema({
         default: true,
     },
 });
+
+module.exports = model("Launch", launchesSchema);

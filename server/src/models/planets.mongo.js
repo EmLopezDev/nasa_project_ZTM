@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const planetsSchema = new Schema({
     kepler_name: {
@@ -6,3 +6,5 @@ const planetsSchema = new Schema({
         required: true,
     },
 });
+
+module.exports = model("Planet", planetsSchema);
