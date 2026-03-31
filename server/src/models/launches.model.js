@@ -20,7 +20,11 @@ async function saveLaunch(launch) {
     const planet = await planets.findOne({ kepler_name: launch.destination });
 
     if (!planet) {
-        throw new Error("No matching planet was found.");
+        throw new Error("No matching planet was found");
+    }
+
+    if (isNaN(launch.launchDate)) {
+        throw new Error("Invalid launch date");
     }
 
     await launches.findOneAndUpdate(
@@ -49,6 +53,7 @@ async function getAllLaunches() {
 async function postNewLaunch(launch) {
     const newFlightNumber = (await getLatestFlightNumber()) + 1;
     const newLaunch = Object.assign(launch, {
+        launchDate: new Date(launch.launchDate),
         customers: ["Zero To Mastery", "NASA"],
         flightNumber: newFlightNumber,
         upcoming: true,
