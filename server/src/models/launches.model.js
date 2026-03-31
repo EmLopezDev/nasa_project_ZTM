@@ -1,10 +1,10 @@
-// const launches = require("./launches.mongo");
-const launches = new Map();
+const launches = require("./launches.mongo");
+const planets = require("./planets.mongo");
 
-let latestFlightNumber = 100;
+const DEFAULT_FLIGHT_NUMBER = 100;
 
 const launch = {
-    flightNumber: 100,
+    flightNumber: DEFAULT_FLIGHT_NUMBER,
     mission: "Kepler Exploration X",
     rocket: "Explorer IS1",
     launchDate: new Date("December 27, 2030"),
@@ -14,32 +14,55 @@ const launch = {
     success: true,
 };
 
-launches.set(launch.flightNumber, launch);
+saveLaunch(launch);
 
-function getLaunchById(launchId) {
-    return launches.has(launchId);
+async function saveLaunch(launch) {
+    const planet = await planets.findOne({ kepler_name: launch.destination });
+
+    if (!planet) {
+        throw new Error("No matching planet was found.");
+    }
+
+    await launches.findOneAndUpdate(
+        {
+            flightNumber: launch.flightNumber,
+        },
+        launch,
+        { upsert: true },
+    );
 }
 
-function getAllLaunches() {
-    return Array.from(launches.values());
+async function getLaunchById(launchId) {
+    return await launches.findOne({ flightNumber: launchId });
 }
 
-function postNewLaunch(launch) {
-    latestFlightNumber++;
-    const updatedLaunch = Object.assign(launch, {
-        flightNumber: latestFlightNumber,
+async function getLatestFlightNumber() {
+    const latestLaunch = await launches.findOne().sort("-flightNumber");
+    if (!latestLaunch) return DEFAULT_FLIGHT_NUMBER;
+    return latestLaunch.flightNumber;
+}
+
+async function getAllLaunches() {
+    return await launches.find({}, { _id: 0, __v: 0 });
+}
+
+async function postNewLaunch(launch) {
+    const newFlightNumber = (await getLatestFlightNumber()) + 1;
+    const newLaunch = Object.assign(launch, {
         customers: ["Zero To Mastery", "NASA"],
+        flightNumber: newFlightNumber,
         upcoming: true,
-        success: true,
     });
-    launches.set(latestFlightNumber, updatedLaunch);
+    await saveLaunch(newLaunch);
 }
 
-function deleteLaunch(launchId) {
-    const aborted = launches.get(launchId);
-    aborted.upcoming = false;
-    aborted.success = false;
-    return aborted;
+async function deleteLaunch(launchId) {
+    const deleted = await launches.updateOne(
+        { flightNumber: launchId },
+        { upcoming: false, success: false },
+    );
+
+    return deleted.matchedCount === 1;
 }
 
 module.exports = {
