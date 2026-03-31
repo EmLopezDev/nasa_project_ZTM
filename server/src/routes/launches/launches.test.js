@@ -2,6 +2,8 @@ const request = require("supertest");
 const app = require("../../app");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
 
+const BASE_LAUNCHES_URL = "/v1/launches";
+
 describe("Launches API", () => {
     beforeAll(async () => {
         await mongoConnect();
@@ -11,10 +13,10 @@ describe("Launches API", () => {
         await mongoDisconnect();
     });
 
-    describe("Test GET /launches", () => {
+    describe("Test GET /v1/launches", () => {
         test("It should respond with 200 success", async () => {
             const response = await request(app)
-                .get("/launches")
+                .get(BASE_LAUNCHES_URL)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(200);
 
@@ -31,7 +33,7 @@ describe("Launches API", () => {
         });
     });
 
-    describe("Test POST /launches", () => {
+    describe("Test POST /v1/launches", () => {
         const completeLaunchData = {
             mission: "USS Enterprise",
             rocket: "NCC 1701-D",
@@ -59,7 +61,7 @@ describe("Launches API", () => {
         };
         test("It should respond with 201 created", async () => {
             const response = await request(app)
-                .post("/launches")
+                .post(BASE_LAUNCHES_URL)
                 .send(completeLaunchData)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(201);
@@ -75,7 +77,7 @@ describe("Launches API", () => {
 
         test("It should catch missing required properties", async () => {
             const response = await request(app)
-                .post("/launches")
+                .post(BASE_LAUNCHES_URL)
                 .send(launchDataWithoutDate)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(400);
@@ -86,7 +88,7 @@ describe("Launches API", () => {
         });
         test("It should catch invalid dates", async () => {
             const response = await request(app)
-                .post("/launches")
+                .post(BASE_LAUNCHES_URL)
                 .send(launchDataWithInvalidDate)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(400);
@@ -98,7 +100,7 @@ describe("Launches API", () => {
 
         test("It should catch invalid planet", async () => {
             const response = await request(app)
-                .post("/launches")
+                .post(BASE_LAUNCHES_URL)
                 .send(launchDataWithInvalidDestination)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(400);

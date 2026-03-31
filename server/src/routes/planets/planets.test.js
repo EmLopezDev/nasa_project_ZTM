@@ -3,7 +3,9 @@ const app = require("../../app");
 const { loadPlanetsData } = require("../../models/planets.model");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
 
-describe("Test GET /planets", () => {
+const BASE_PLANETS_URL = "/v1/planets";
+
+describe("Test GET /v1/planets", () => {
     beforeAll(async () => {
         await mongoConnect();
         await loadPlanetsData();
@@ -14,7 +16,7 @@ describe("Test GET /planets", () => {
     });
     test("It should respond with 200 success", async () => {
         const response = await request(app)
-            .get("/planets")
+            .get(BASE_PLANETS_URL)
             .expect("Content-Type", "application/json; charset=utf-8")
             .expect(200);
 
