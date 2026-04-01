@@ -21,14 +21,13 @@ describe("Launches API", () => {
                 .expect(200);
 
             expect(response.body[0]).toStrictEqual({
-                flightNumber: 100,
-                mission: "Kepler Exploration X",
-                rocket: "Explorer IS1",
-                launchDate: new Date("December 27, 2030").toISOString(),
-                destination: "Kepler-442 b",
-                customers: ["NASA", "ZTM"],
-                upcoming: true,
-                success: true,
+                flightNumber: 1,
+                customers: ["DARPA"],
+                launchDate: "2006-03-24T22:30:00.000Z",
+                mission: "FalconSat",
+                rocket: "Falcon 1",
+                success: false,
+                upcoming: false,
             });
         });
     });
