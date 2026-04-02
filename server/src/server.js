@@ -2,7 +2,6 @@ const https = require("https");
 const app = require("./app");
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config();
 
 const { mongoConnect } = require("./services/mongo");
 const { loadPlanetsData } = require("./models/planets.model");
