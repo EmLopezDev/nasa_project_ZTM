@@ -4,6 +4,7 @@ const path = require("path");
 const morgan = require("morgan");
 const api = require("./routes/api");
 const helmet = require("helmet");
+const { checkLoggedIn } = require("./middleware/auth");
 
 const app = express();
 
