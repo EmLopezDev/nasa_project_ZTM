@@ -37,4 +37,20 @@ async function httpAbortLaunch(id) {
     }
 }
 
-export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };
+async function httpAuthLogin() {
+    try {
+        const response = await fetch(`${BASE_API_URL}/auth/google`);
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export {
+    httpGetPlanets,
+    httpGetLaunches,
+    httpSubmitLaunch,
+    httpAbortLaunch,
+    httpAuthLogin,
+};

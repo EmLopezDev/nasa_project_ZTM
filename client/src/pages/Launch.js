@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../components/Clickable";
+import { httpAuthLogin } from "../hooks/requests";
 
 const Launch = (props) => {
     const selectorBody = useMemo(() => {
@@ -15,16 +16,6 @@ const Launch = (props) => {
     }, [props.planets]);
 
     const today = new Date().toISOString().split("T")[0];
-
-    async function login() {
-        try {
-            const response = await fetch("https://localhost:8000/auth/google");
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.error(error);
-        }
-    }
 
     return (
         <Appear
@@ -104,12 +95,7 @@ const Launch = (props) => {
                 )}
             </form>
             {/* TODO: remove after testing OAuth with google */}
-            {/* <button
-                type="button"
-                onClick={() => login()}
-            >
-                Login
-            </button> */}
+            <a href="https://localhost:8000/v1/auth/google">Login</a>
         </Appear>
     );
 };
