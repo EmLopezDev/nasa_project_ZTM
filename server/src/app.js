@@ -5,10 +5,14 @@ const morgan = require("morgan");
 const api = require("./routes/api");
 const helmet = require("helmet");
 const passport = require("passport");
+const { sessionMiddleware } = require("./middleware/session");
 
 const app = express();
 
 app.use(helmet());
+
+app.use(sessionMiddleware);
+
 app.use(passport.initialize());
 
 app.use(

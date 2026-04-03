@@ -54,7 +54,7 @@ async function populateLaunchData() {
 async function loadLaunchesData() {
     const firstLaunch = await findLaunch({ flightNumber: 1 });
     if (firstLaunch) {
-        console.log(`${firstLaunch} exists`);
+        console.log("Launches have already been loaded");
     } else {
         await populateLaunchData();
     }
