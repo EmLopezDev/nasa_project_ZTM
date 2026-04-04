@@ -1,6 +1,6 @@
 function checkLoggedIn(req, res, next) {
-    const isLoggedIn = true;
-    if (!isLoggedIn) {
+    console.log("REQ USER ====>", req.user);
+    if (!req.user) {
         return res.status(401).json({ error: "You must log in!" });
     }
     next();

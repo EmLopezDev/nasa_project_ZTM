@@ -24,6 +24,7 @@ const sessionMiddleware = (req, _res, next) => {
             next();
         },
     );
+    next();
 };
 
 module.exports = { sessionMiddleware };

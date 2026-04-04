@@ -1,13 +1,17 @@
 const BASE_API_URL = "https://localhost:8000/v1";
 
 async function httpGetPlanets() {
-    const response = await fetch(`${BASE_API_URL}/planets`);
+    const response = await fetch(`${BASE_API_URL}/planets`, {
+        credentials: "include",
+    });
     const data = await response.json();
     return data;
 }
 
 async function httpGetLaunches() {
-    const response = await fetch(`${BASE_API_URL}/launches`);
+    const response = await fetch(`${BASE_API_URL}/launches`, {
+        credentials: "include",
+    });
     const data = await response.json();
     return data.sort((a, b) => a.flightNumber - b.flightNumber);
 }
@@ -18,6 +22,7 @@ async function httpSubmitLaunch(launch) {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(launch),
+            credentials: "include",
         });
         return response;
     } catch (error) {
@@ -30,6 +35,7 @@ async function httpAbortLaunch(id) {
         const response = await fetch(`${BASE_API_URL}/launches/${id}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
         });
         return response;
     } catch (error) {
@@ -39,7 +45,9 @@ async function httpAbortLaunch(id) {
 
 async function httpAuthLogin() {
     try {
-        const response = await fetch(`${BASE_API_URL}/auth/google`);
+        const response = await fetch(`${BASE_API_URL}/auth/google`, {
+            credentials: "include",
+        });
         const data = await response.json();
         console.log(data);
     } catch (error) {
