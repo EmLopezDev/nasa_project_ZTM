@@ -5,7 +5,7 @@ const authRouter = require("./auth/auth.router");
 
 const api = express.Router();
 
-// api.use("/auth", authRouter);
+api.use("/auth", authRouter);
 api.use("/planets", planetsRouter);
 api.use("/launches", launchesRouter);
 
