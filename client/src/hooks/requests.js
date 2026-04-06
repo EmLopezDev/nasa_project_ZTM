@@ -43,22 +43,4 @@ async function httpAbortLaunch(id) {
     }
 }
 
-async function httpAuthLogin() {
-    try {
-        const response = await fetch(`${BASE_API_URL}/auth/google`, {
-            credentials: "include",
-        });
-        const data = await response.json();
-        console.log(data);
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export {
-    httpGetPlanets,
-    httpGetLaunches,
-    httpSubmitLaunch,
-    httpAbortLaunch,
-    httpAuthLogin,
-};
+export { httpGetPlanets, httpGetLaunches, httpSubmitLaunch, httpAbortLaunch };

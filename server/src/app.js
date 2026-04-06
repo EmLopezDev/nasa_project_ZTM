@@ -17,7 +17,7 @@ passport.use(new Strategy(AUTH_OPTIONS, verifyCallback));
 app.use(helmet());
 app.use(
     cors({
-        origin: "https://localhost:3000",
+        origin: ["https://localhost:3000", "https://localhost:8000"],
         credentials: true,
     }),
 );
@@ -47,7 +47,7 @@ app.use(
             httpOnly: true,
             secure: true,
             maxAge: Number(config.COOKIE_MAX_AGE),
-            sameSite: "lax",
+            sameSite: "none",
         },
     }),
 );

@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { Appear, Button, Loading, Paragraph } from "arwes";
 import Clickable from "../components/Clickable";
-import { httpAuthLogin } from "../hooks/requests";
 
 const Launch = (props) => {
     const selectorBody = useMemo(() => {
@@ -95,7 +94,12 @@ const Launch = (props) => {
                 )}
             </form>
             {/* TODO: remove after testing OAuth with google */}
-            <a href="https://localhost:8000/v1/auth/google">Login</a>
+            <button type="button">
+                <a href="https://localhost:8000/v1/auth/google">Login</a>
+            </button>
+            <button type="button">
+                <a href="https://localhost:8000/v1/auth/logout">Logout</a>
+            </button>
         </Appear>
     );
 };
