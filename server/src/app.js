@@ -5,7 +5,7 @@ const morgan = require("morgan");
 const api = require("./routes/api");
 const helmet = require("helmet");
 const passport = require("passport");
-const cookieSession = require("cookie-session");
+const expressSession = require("express-session");
 const config = require("./config");
 const { Strategy } = require("passport-google-oauth20");
 const { AUTH_OPTIONS, verifyCallback } = require("./middleware/passport");
@@ -21,42 +21,39 @@ app.use(
         credentials: true,
     }),
 );
+
+passport.serializeUser((user, done) => {
+    const { name, emails, photos } = user;
+    const userObj = {
+        first_name: name.givenName,
+        last_name: name.familyName,
+        email: emails[0].value,
+        photo: photos[0].value,
+    };
+    done(null, userObj);
+});
+
+passport.deserializeUser((user, done) => {
+    done(null, user);
+});
+
 app.use(
-    cookieSession({
+    expressSession({
         name: config.COOKIE_NAME,
-        maxAge: config.COOKIE_MAX_AGE,
-        keys: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
-        secure: true,
-        sameSite: "none",
+        secret: [config.COOKIE_KEY_1, config.COOKIE_KEY_2],
+        resave: false,
+        saveUninitialized: true,
+        cookie: {
+            httpOnly: true,
+            secure: true,
+            maxAge: Number(config.COOKIE_MAX_AGE),
+            sameSite: "lax",
+        },
     }),
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.serializeUser((user, done) => {
-    console.log("SERIALIZE-USER", user);
-    done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-    console.log("DESERIALIZE-USER", user);
-    done(null, user);
-});
-
-app.use((req, _res, next) => {
-    if (req.session && !req.session.regenerate) {
-        req.session.regenerate = (cb) => {
-            cb();
-        };
-    }
-    if (req.session && !req.session.save) {
-        req.session.save = (cb) => {
-            cb();
-        };
-    }
-    next();
-});
 
 app.use(morgan("combined"));
 
