@@ -8,16 +8,22 @@ jobs:
     build:
         env:
             CI: true
+            MONGO_URL: mongodb://localhost
         strategy:
             matrix:
                 node-version: [20.x, 21.x, 22.x, 23.x, 24.x]
+                mongodb-version: ["8.0"]
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
             - name: Use Node.js version ${{matrix.node-version}}
               uses: actions/setup-node@v6
               with:
-                  node-version: ${{matrix.node-version}}
+                node-version: ${{matrix.node-version}}
+            - name: Use MongoDB from Github actions
+              uses: supercharge/mongodb-github-action@1.12.1
+              with:
+                mongodb-version: ${{matrix.mongodb-version}}
             - run: npm install
             - run: npm run build --prefix client
             - run: npm test
