@@ -37,7 +37,18 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(morgan("combined"));
+app.use(
+    morgan(`
+        {
+            METHOD => :method
+            URL => :url
+            STATUS => :status
+            RES-TYPE => :res[content-type]
+            RES-TIME => :response-time ms
+            USER AGENT => :user-agent
+        }
+        `),
+);
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "public")));
