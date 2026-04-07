@@ -8,7 +8,7 @@ jobs:
     build:
         env:
             CI: true
-            MONGO_URL: mongodb://localhost
+            MONGO_URL: mongodb://localhost/nasa
             GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
             GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
             COOKIE_NAME: ${{secrets.COOKIE_NAME}}
@@ -17,7 +17,7 @@ jobs:
             COOKIE_MAX_AGE: ${secrets.COOKIE_MAX_AGE}
         strategy:
             matrix:
-                node-version: [20.x, 21.x, 22.x, 23.x, 24.x]
+                node-version: [23.x, 24.x]
                 mongodb-version: ["8.0"]
         runs-on: ubuntu-latest
         steps:

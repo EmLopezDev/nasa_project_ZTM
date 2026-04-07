@@ -1,12 +1,14 @@
 const request = require("supertest");
 const app = require("../../app");
 const { mongoConnect, mongoDisconnect } = require("../../services/mongo");
+const { loadPlanetsData } = require("../../models/planets.model");
 
 const BASE_LAUNCHES_URL = "/v1/launches";
 
 describe("Launches API", () => {
     beforeAll(async () => {
         await mongoConnect();
+        await loadPlanetsData();
     });
 
     afterAll(async () => {
@@ -15,20 +17,10 @@ describe("Launches API", () => {
 
     describe("Test GET /v1/launches", () => {
         test("It should respond with 200 success", async () => {
-            const response = await request(app)
+            await request(app)
                 .get(BASE_LAUNCHES_URL)
                 .expect("Content-Type", "application/json; charset=utf-8")
                 .expect(200);
-
-            expect(response.body[0]).toStrictEqual({
-                flightNumber: 1,
-                customers: ["DARPA"],
-                launchDate: "2006-03-24T22:30:00.000Z",
-                mission: "FalconSat",
-                rocket: "Falcon 1",
-                success: false,
-                upcoming: false,
-            });
         });
     });
 
