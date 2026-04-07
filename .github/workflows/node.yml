@@ -9,6 +9,12 @@ jobs:
         env:
             CI: true
             MONGO_URL: mongodb://localhost
+            GOOGLE_CLIENT_ID: ${{secrets.GOOGLE_CLIENT_ID}}
+            GOOGLE_CLIENT_SECRET: ${{secrets.GOOGLE_CLIENT_SECRET}}
+            COOKIE_NAME: ${{secrets.COOKIE_NAME}}
+            COOKIE_KEY_1: ${{secrets.COOKIE_KEY_1}}
+            COOKIE_KEY_2: ${{secrets.COOKIE_KEY_2}}
+            COOKIE_MAX_AGE: ${secrets.COOKIE_MAX_AGE}
         strategy:
             matrix:
                 node-version: [20.x, 21.x, 22.x, 23.x, 24.x]
@@ -19,11 +25,18 @@ jobs:
             - name: Use Node.js version ${{matrix.node-version}}
               uses: actions/setup-node@v6
               with:
-                node-version: ${{matrix.node-version}}
+                  node-version: ${{matrix.node-version}}
             - name: Use MongoDB from Github actions
               uses: supercharge/mongodb-github-action@1.12.1
               with:
-                mongodb-version: ${{matrix.mongodb-version}}
+                  mongodb-version: ${{matrix.mongodb-version}}
             - run: npm install
-            - run: npm run build --prefix client
+            - run: |
+                  npm run build --prefix client
+                  echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
+                  echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
+                  echo "COOKIE_NAME=$COOKIE_NAME" >> .env
+                  echo "COOKIE_KEY_1=$COOKIE_KEY_1" >> .env
+                  echo "COOKIE_KEY_2=$COOKIE_KEY_2" >> .env
+                  echo "COOKIE_MAX_AGE=$COOKIE_MAX_AGE" >> .env
             - run: npm test
