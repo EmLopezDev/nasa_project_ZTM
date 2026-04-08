@@ -14,6 +14,9 @@ RUN npm run build --prefix client
 
 COPY server/ server/
 
+COPY --chown=node:node ./server/key.pem /app/server/key.pem
+COPY --chown=node:node ./server/cert.pem /app/server/cert.pem
+
 USER node
 
 EXPOSE 8000

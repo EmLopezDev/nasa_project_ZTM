@@ -13,7 +13,7 @@ authRouter.get(
     "/google/callback",
     passport.authenticate("google", {
         failureRedirect: "/v1/auth/failure",
-        successRedirect: "https://localhost:3000",
+        successRedirect: "https://localhost:8000",
         session: true,
     }),
 );
@@ -22,7 +22,7 @@ authRouter.get("/logout", (req, res, next) => {
         if (error) return next(error);
         req.session.destroy(() => {
             res.clearCookie("session");
-            res.redirect("https://localhost:3000");
+            res.redirect("https://localhost:8000");
         });
     });
 });
